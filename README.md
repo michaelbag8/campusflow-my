@@ -304,5 +304,5 @@ The test cover:
 
 ### Pull Request Links
 
-* Engineer A's PR: 
-* Engineer B's PR: 
+* Engineer A's PR: [PR Link](https://github.com/yini-19/campusflow-my/pull/5#issue-5791514130)
+* Engineer B's PR: [PR Link](https://github.com/yini-19/campusflow-my/pull/7#issue-5795730642)
