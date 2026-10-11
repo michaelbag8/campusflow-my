@@ -66,7 +66,7 @@ Functions that fail because of invalid input or an invalid operation raise `Valu
     "affected_users": 12,
     "priority": "critical",
     "status": "open",
-    "assigned_to": "",
+    "assigned_to": None,
 }
 ```
 
@@ -144,4 +144,4 @@ All engineers should run the full test suite before submitting their changes for
 
 ## 10. Agreement
 
-These decisions are the shared contract for the sprint. If a function signature, ticket field, or return value needs to change, the team should agree on the change and update this document before integrating incompatible code.
+These decisions serve as the shared contract for the sprint. Any changes to function signatures, ticket fields, or return values must be agreed upon by both fellows and documented here before integrating code that could introduce incompatibilities.
