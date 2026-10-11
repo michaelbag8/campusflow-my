@@ -1,259 +1,229 @@
 # CampusFlow — Individual AI Learning Log
 
-**Fellow:** YIYAKAZAH NICODEMUS
-**Role:** Engineer A
-**Project:** CampusFlow — AI-Native Engineering Sprint
+### Fellow: YIYAKAZAH NICODEMUS 
+### Role: Engineer A 
+### Project: CampusFlow
 
----
 
-## Interaction #1 — Managing Ticket Status and Valid Transitions
+# Interaction
+# 1 — Validating Ticket Input
 
 ### Problem
 
-I needed to understand how to enforce ticket lifecycle rules in CampusFlow. A ticket should move through `open`, `in_progress`, and `resolved`. An unassigned ticket must not move into `in_progress`, and a resolved ticket must be explicitly reopened before it can be modified again.
+CampusFlow requires users to provide valid information when creating a ticket. The ticket title must not be empty, the category must belong to a supported list, urgency must be low, medium, or high, and the number of affected users must be a positive integer.
+
+I needed to understand how to validate user input in Python and prevent invalid information from being stored in the ticket system.
 
 ### My initial understanding
 
-I understood that a ticket's status describes its current state, but I was not sure how to prevent invalid transitions. I also needed to understand how to check a ticket's current state before updating it.
+I understood how to collect information using Python's `input()` function, but I was unsure how to repeatedly request input when the user entered an invalid value. I also needed to understand how to validate different data types and handle variations in capitalization.
 
 ### Prompt to AI
 
-"Explain how to implement a state transition system in Python using a small example unrelated to a helpdesk application. Show how to prevent invalid transitions, check the current state before updating it, and test the behavior. Do not write my CampusFlow implementation for me."
+"Explain how Python functions, while loops, and conditional statements can be used to validate user input. Use an unrelated example involving a student registration system. Show how to reject empty strings, restrict choices to a predefined list, and validate a positive integer. Do not write my CampusFlow implementation for me."
 
 ### Useful AI guidance
 
-I learned that a state transition function should check the current state and the requested next state before changing anything. If the transition is invalid, it should raise an exception and leave the original state unchanged.
+I learned that a `while True` loop can repeatedly request input until a valid value is entered. Conditional statements check whether the input meets specific requirements, while `return` exits the function once valid input has been obtained.
 
-For example, consider a simple machine that can be turned on or off:
+For example, a student registration system could validate a student's department:
+
 
 ```python
-def change_power_state(current_state, new_state):
-    allowed_transitions = {
-        "off": ["on"],
-        "on": ["off"],
-    }
+def validate_department():
+    allowed_departments = ("Science", "Arts", "Business")
 
-    if new_state not in allowed_transitions.get(current_state, []):
-        raise ValueError("Invalid power-state transition.")
+    while True:
+        department = input("Enter department: ").strip().capitalize()
 
-    return new_state
+        if department in allowed_departments:
+            return department
+
+        print("Invalid department. Try again.")
 ```
 
-This example only allows `off` to change to `on`, or `on` to change to `off`.
+The `strip()` method removes unnecessary spaces, while `capitalize()` normalizes the first letter. The function returns only when the department matches one of the allowed options.
+
+I also learned that `isdigit()` can help validate positive whole-number input, although additional checks may be required depending on the accepted input format.
 
 ### My independent experiment/test
 
-I planned to test three cases:
+I planned to test the validation approach with the following inputs:
 
-1. Change the state from `off` to `on`.
-2. Change the state from `on` to `off`.
-3. Attempt to change the state from `off` to `sleep`.
+1. Enter a valid department such as `Science`.
+2. Enter an unsupported department such as `Engineering`.
+3. Enter a department with extra spaces, such as `science`.
+4. Enter an empty value and check that the function requests input again.
 
-I predicted that the first two operations would succeed and the third would raise a `ValueError`.
-
-### Verification source or result
-
-[Record the actual output from running the experiment and whether each result matched the prediction.]
-
-Reference: Python documentation — https://docs.python.org/3/tutorial/errors.html
+I predicted that valid values would be accepted, unsupported values would be rejected, and surrounding spaces would be removed before validation.
 
 ### Decision
 
-I accepted the principle of validating transitions before making changes. I will apply it to CampusFlow by checking the existing ticket status and assignment before updating the ticket.
+I accepted the approach of placing validation rules inside separate functions. In CampusFlow, I use this principle in `validate_title()`, `validate_category()`, `validate_urgency()`, and `validate_affected_users()`.
 
-### Related file/commit
+This keeps the input-validation logic separate from ticket creation and makes the program easier to understand and test.
 
-* File: `campusflow/workflow.py`
-* Test: [Add actual status-transition test name]
-* Commit or PR: [Add actual commit SHA or PR link]
 
 ### What I can now explain without AI
 
-A state transition function must validate the current state and requested next state before updating a record. In CampusFlow, an unassigned ticket cannot move into `in_progress`, and a resolved ticket must be explicitly reopened before further modification. Tests should confirm both valid and invalid transitions.
+I can explain how loops and conditional statements enforce input rules. I understand that separate validation functions make code more organized and that input should be checked before it is used to create a ticket. I can also explain why stripping whitespace and normalizing capitalization improve the user experience.
 
----
 
-## Interaction #2 — Sorting Tickets by Priority and Numeric ID
+# 2 — Calculating Ticket Priority
 
 ### Problem
 
-CampusFlow must display unresolved tickets in priority order: critical, high, medium, and low. Tickets with the same priority must be sorted by their numeric ticket IDs, with earlier IDs first. I needed to understand how to implement this without accidentally sorting priority names alphabetically.
+CampusFlow must calculate ticket priority using two factors: urgency and the number of affected users. The result can be low, medium, high, or critical.
+
+I needed to understand how to combine multiple conditions in Python and ensure that the most serious conditions take precedence over less serious ones.
 
 ### My initial understanding
 
-I knew Python could sort lists using `sorted()`, but I was unsure how to apply a custom priority order and then use a second condition to break ties.
+I understood basic `if` and `else` statements, but I was less confident about combining conditions with `and` and `or`. I also needed to understand why the order of conditional branches matters when several conditions could apply to the same record.
 
 ### Prompt to AI
 
-"Teach me how Python's `sorted()` function and sorting keys work. Use an unrelated example of sorting tasks by importance and then by task number. Explain why alphabetical sorting may give the wrong order and give me a small experiment to verify the result. Do not use CampusFlow code."
+"Explain how Python's if, elif, else, and logical operators work when making decisions based on two variables. Use an unrelated example involving equipment maintenance, with severity and the number of affected machines. Explain why condition order matters and suggest test cases. Do not write my CampusFlow priority function."
 
 ### Useful AI guidance
 
-I learned that a sorting key can return a tuple containing multiple values. Python sorts by the first value and then uses the next value when the first values are equal.
+I learned that Python uses logical operators to combine conditions:
 
-For example:
+- `and` requires both conditions to be true.
+- `or` requires at least one condition to be true.
+- `elif` checks another condition if the preceding condition was not satisfied.
+
+For example, an equipment maintenance system could determine a response level:
 
 ```python
-tasks = [
-    {"number": 3, "importance": "normal"},
-    {"number": 2, "importance": "urgent"},
-    {"number": 1, "importance": "urgent"},
+def maintenance_level(severity, affected_machines):
+    if severity == "severe" and affected_machines >= 10:
+        return "emergency"
+    elif severity == "severe" or affected_machines >= 10:
+        return "urgent"
+    elif severity == "moderate" or affected_machines >= 3:
+        return "normal"
+    else:
+        return "low"
+```
+
+I learned that the most serious condition should be checked first. Otherwise, a broader condition might match before the program reaches the more specific condition.
+
+### My independent experiment/test
+
+I planned to test the example using these cases:
+
+1. Severe maintenance affecting 10 machines.
+2. Severe maintenance affecting one machine.
+3. Moderate maintenance affecting three machines.
+4. Minor maintenance affecting one machine.
+
+I predicted that the resulting levels would be emergency, urgent, normal, and low, respectively.
+
+I would also test boundary values to confirm how the conditions behave when the number of affected machines changes from two to three and from nine to ten.
+
+
+### Decision
+
+I accepted the principle of evaluating the highest-priority condition first. In CampusFlow, `calculate_priority(urgency, affected_users)` applies the same approach to determine whether a ticket is critical, high, medium, or low.
+
+I will use boundary-value tests to check that the conditions work correctly, particularly when urgency is high and when the affected-user count reaches the thresholds of three and ten.
+
+
+### What I can now explain without AI
+
+I can explain how logical operators combine conditions and why the order of `if` and `elif` branches affects the result. I understand that priority rules should be tested using normal cases, edge cases, and boundary values to ensure that each combination produces the expected result.
+
+# 3 — Saving and Retrieving Tickets with JSON
+
+### Problem
+
+CampusFlow needs to preserve ticket information after the program closes. The current implementation stores tickets in a JSON file called `tickets.json`.
+
+I needed to understand how Python reads and writes JSON data, how to handle multiple records, and how to avoid losing previously saved tickets when a new ticket is created.
+
+### My initial understanding
+
+I knew that Python could write information to a file, but I was unsure how to convert dictionaries into JSON and retrieve them later. I also needed to understand how to append a new ticket to an existing collection without overwriting earlier records.
+
+### Prompt to AI
+
+"Explain how Python's json module can store and retrieve a collection of dictionaries in a file. Use an unrelated example involving a collection of library equipment records. Show how to load existing records, append a new record, and write the collection back to the file. Explain how to test the process and handle an initially missing file. Do not write my CampusFlow storage functions."
+
+### Useful AI guidance
+
+I learned that Python's `json` module provides two important functions:
+
+- `json.load()` reads JSON data from an open file and converts it into Python objects.
+- `json.dump()` writes Python objects to a file in JSON format.
+
+For example, a library equipment system could store records as follows:
+
+
+```python
+import json
+
+equipment = [
+    {"asset_id": "A001", "condition": "good"},
+    {"asset_id": "A002", "condition": "repair"},
 ]
 
-importance_order = {
-    "urgent": 0,
-    "normal": 1,
-    "low": 2,
-}
-
-ordered_tasks = sorted(
-    tasks,
-    key=lambda task: (
-        importance_order[task["importance"]],
-        task["number"],
-    ),
-)
-
-print(ordered_tasks)
+with open("equipment.json", "w") as file:
+    json.dump(equipment, file, indent=4)
 ```
 
-The dictionary converts importance levels into numeric ranks, while the second key sorts tasks with equal importance by their task numbers.
+The `indent=4` argument makes the saved JSON easier to read.
+
+I also learned that if the file does not exist, the program can start with an empty list. If it already exists, the program should load the saved records before adding a new one. The complete collection can then be written back to the file.
 
 ### My independent experiment/test
 
-I planned to run the example and predict that the urgent task numbered 1 would appear before the urgent task numbered 2, followed by the normal task numbered 3.
+I planned to conduct these experiments:
 
-I would then change the task numbers and importance levels to confirm that both sorting conditions work correctly.
+1. Save two equipment records to a new JSON file.
+2. Read the file and verify that both records are present.
+3. Append a third record and save the collection again.
+4. Reload the file and confirm that all three records remain.
+5. Repeat the experiment when the file does not initially exist.
 
-### Verification source or result
-
-[Record the actual output and confirm whether the tasks appeared in the expected order.]
-
-Reference: Python documentation — https://docs.python.org/3/howto/sorting.html
-
-### Decision
-
-I accepted the custom sorting-key approach after verifying the example. For CampusFlow, I will use an explicit priority ranking instead of sorting priority names alphabetically. I will also ensure that resolved tickets are excluded before returning the work queue.
-
-### Related file/commit
-
-* File: `campusflow/workflow.py`
-* Test: [Add actual queue-ordering test name]
-* Commit or PR: [Add actual commit SHA or PR link]
-
-### What I can now explain without AI
-
-Python's `sorted()` can use a tuple as a sorting key to apply multiple ordering rules. In CampusFlow, the first key will represent priority, and the second will represent the numeric ticket ID. This produces the required order even when multiple tickets have the same priority.
-
----
-
-## Interaction #3 — Testing Reports and Empty Data
-
-### Problem
-
-CampusFlow must report the total number of tickets and the breakdown by status and priority. The reporting function must also work when the ticket collection is empty.
-
-I needed to understand how to count values in a list of dictionaries and how to test both normal and empty cases.
-
-### My initial understanding
-
-I knew that Python loops could count records, but I was not sure how to organize the results into a dictionary or how to ensure that statuses and priorities with no tickets still appeared with a count of zero.
-
-### Prompt to AI
-
-"Explain how to count categories in a list of dictionaries in Python. Use an unrelated example involving library books grouped by availability. Show how to handle an empty list and how to test the expected counts with unittest. Give me a small experiment instead of writing my project function."
-
-### Useful AI guidance
-
-I learned that a loop can count records by category. Initializing expected categories with zero ensures that categories with no matching records are still represented in the result.
-
-Example:
-
-```python
-def count_books(books):
-    counts = {
-        "available": 0,
-        "borrowed": 0,
-    }
-
-    for book in books:
-        status = book["status"]
-        counts[status] += 1
-
-    return counts
-```
-
-For an empty list, the function returns:
-
-```python
-{
-    "available": 0,
-    "borrowed": 0,
-}
-```
-
-For a list containing two available books and one borrowed book, the counts should be two and one, respectively.
-
-### My independent experiment/test
-
-I planned to run the function with:
-
-1. An empty list.
-2. A list containing two available books and one borrowed book.
-3. A list containing only borrowed books.
-
-I predicted that the counts would be zero for both categories in the first case, two and one in the second, and zero and the total number of books in the third.
-
-I would verify the results using assertions in a small `unittest.TestCase`.
-
-### Verification source or result
-
-[Record the actual test output, including whether all assertions passed.]
-
-Reference: Python documentation — https://docs.python.org/3/library/unittest.html
+I predicted that the first run would create the file and that subsequent runs would preserve earlier records while adding new ones.
 
 ### Decision
 
-I accepted the approach of initializing the category counts before counting records. I will use the same principle for CampusFlow reports so every supported status and priority has a count, even when no tickets belong to that category.
+I accepted the approach of loading existing records, appending a new dictionary, and writing the complete list back to the file. In CampusFlow, the `save_ticket()` function follows this pattern.
 
-### Related file/commit
+I also learned that a JSON file may contain either a single dictionary or a list of dictionaries. My current implementation checks for a dictionary and converts it into a list so that ticket operations can work with a consistent collection.
 
-* File: `campusflow/reports.py`
-* Test: [Add actual report test name]
-* Commit or PR: [Add actual commit SHA or PR link]
+For further improvement, I would test how the program behaves if the JSON file contains invalid or corrupted data, because the current implementation does not explicitly recover from every possible file-reading error.
+
 
 ### What I can now explain without AI
 
-A report can count tickets by examining each ticket's status and priority. Initializing all supported categories with zero makes the output consistent and ensures the report works when there are no tickets. I will test both populated and empty ticket collections.
-
----
+I can explain how dictionaries represent individual records and how a list of dictionaries can represent multiple records. I understand how `json.load()` retrieves saved information and how `json.dump()` persists updates. I can also explain why existing records must be loaded before adding a new ticket if the program is to preserve previously saved data.
 
 ## Final Reflection
 
-These three learning interactions helped me understand state transitions, multi-condition sorting, and report generation in Python.
-
-As Engineer B, I will apply these concepts to ticket assignment, lifecycle management, the unresolved-ticket queue, and reporting. I will verify my implementation with automated tests and review Engineer A's code to ensure that our modules work together.
+These three learning interactions helped me understand input validation, conditional logic, and JSON persistence in Python. They directly relate to the current CampusFlow implementation.
 
 ### Evidence Checklist
 
-* [ ] I ran the state-transition experiment and recorded the actual result.
-* [ ] I ran the sorting experiment and verified the ordering.
-* [ ] I ran the report-counting experiment and recorded the test results.
-* [ ] I updated the test names and related file paths to match my implementation.
-* [ ] I added actual commit SHAs or PR links where available.
-* [ ] I can explain all three concepts in my own words.
-* [ ] I documented at least one AI suggestion that I independently corrected, improved, or rejected after verification.
+- [ ]I tested the priority calculation with normal cases and boundary values.
+- [ ]I tested saving, loading, and appending JSON records.
+- [ ]I recorded the actual output rather than relying only on predicted results.
+- [ ]I updated the filenames and test names to match my implementation.
+- [ ]I added actual commit SHAs or PR links where available.
+- [ ]I can explain the three concepts without AI assistance.
 
 
 # CampusFlow — Individual AI Learning Log
 
 **Fellow:** Michael Bulus
 **Role:** Engineer B
-**Project:** CampusFlow — AI-Native Engineering Sprint
+**Project:** CampusFlow
 
 ---
-
-## Interaction #1 — JSON Persistence in Python
+## Interaction 
+# 1 — JSON Persistence in Python
 
 **Problem:**
 
