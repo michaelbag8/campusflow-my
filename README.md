@@ -1,4 +1,4 @@
-# CampusFlow — AI-Native Engineering Sprint
+# CampusFlow Next — AI-Native Engineering Sprint
 
 **A Python Command-Line Helpdesk Ticket Management System**
 
@@ -33,8 +33,8 @@ Update the placeholders below with the actual names and GitHub usernames of both
 
 | Team member       | Role                              | Main responsibilities                                                                                                                                       |
 | ----------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Fellow A's Name] | Engineer A                        | Ticket creation, input validation, priority calculation, and related automated tests.                                                                       |
-| [Fellow B's Name] | Engineer B                        | Ticket assignment, status workflow, work queue, reporting, and related automated tests.                                                                     |
+| Michael Bulus | Engineer A                        | Ticket creation, input validation, priority calculation, and related automated tests.                                                                       |
+| Moses Ochife | Engineer B                        | Ticket assignment, status workflow, work queue, reporting, and related automated tests.                                                                     |
 | Both fellows      | Integration and quality assurance | Agree on function contracts, integrate JSON persistence, review each other's pull requests, maintain AI learning logs, and prepare the final demonstration. |
 
 
@@ -235,8 +235,8 @@ Depending on your operating system, you may need to use `python3` instead of `py
 Replace the URL with your team's actual GitHub repository URL.
 
 ```bash
-git clone https://github.com/michaelbag8/campusflow-my
-cd campusflow-my
+git clone https://github.com/michaelbag8/campusflow-next-momi
+cd campusflow-next-momi
 ```
 
 ### Optional: Create a Virtual Environment
@@ -267,15 +267,28 @@ python main.py
 
 The CLI should present a menu containing the following options:
 
-1. Create a ticket.
-2. List all tickets.
-3. View a ticket by ID.
-4. Assign a ticket.
-5. Change ticket status.
-6. Display the work queue.
-7. Generate a report.
-8. Reopen a resolved ticket.
-9. Exit.
+[ Ticket Management ]
+        1.  Create Ticket
+        2.  List All Tickets
+        3.  View Ticket Details
+        4.  Assign Ticket to Staff
+        5.  Change Ticket Status
+        8.  Reopen Ticket
+
+[ Collaboration & Search ]
+        10. Add Follow-Up Note
+        11. View Ticket Notes
+        12. Search Tickets
+        13. Sorted Search Results
+
+[ Insights & Quality ]
+        6.  Work Queue Overview
+        7.  Standard Reports
+        14. Enhanced Reports
+        15. Engineering Understanding Check
+
+[ System ]
+        9.  Exit
 
 
 ## 10. Running Automated Tests
@@ -300,9 +313,3 @@ The test cover:
 * Correct reports, including an empty ticket list.
 * JSON save-and-load behavior.
 * Unique ticket IDs after reloading existing tickets.
-
-
-### Pull Request Links
-
-* Engineer A's PR: [PR Link](https://github.com/yini-19/campusflow-my/pull/5#issue-5791514130)
-* Engineer B's PR: [PR Link](https://github.com/yini-19/campusflow-my/pull/7#issue-5795730642)

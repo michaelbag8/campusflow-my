@@ -1,6 +1,6 @@
 # CampusFlow — Individual AI Learning Log
 
-### Fellow: YIYAKAZAH NICODEMUS 
+### Fellow: Michael Bulus
 ### Role: Engineer A 
 ### Project: CampusFlow
 
@@ -217,7 +217,7 @@ These three learning interactions helped me understand input validation, conditi
 
 # CampusFlow — Individual AI Learning Log
 
-**Fellow:** Michael Bulus
+**Fellow:** Moses Ochife
 **Role:** Engineer B
 **Project:** CampusFlow
 
