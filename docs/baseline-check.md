@@ -33,7 +33,7 @@ state without impacting any branches by switching back to a branch.
 If you want to create a new branch to retain commits you create, you may
 do so (now or later) by using -c with the switch command. Example:
 
-  git switch -c <new-branch-name>
+  git switch -c feat/2-notes-and-json-storage
 
 Or undo this operation with:
 
