@@ -41,4 +41,5 @@ Or undo this operation with:
 
 Turn off this advice by setting config variable advice.detachedHead to false
 
-HEAD is now at e591c41 Merge pull request #10 from michaelbag8/main
+
+`HEAD is now at e591c41 Merge pull request #10 from michaelbag8/main`
