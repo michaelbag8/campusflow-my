@@ -6,7 +6,30 @@
         "urgency": "low",
         "affected_users": 3,
         "priority": "medium",
-        "status": "in_progress",
-        "assigned_to": "Kings"
+        "status": "open",
+        "assigned_to": "Mr Gabriel",
+        "notes": [
+            {
+                "note_id": "N001",
+                "author": "Gambo",
+                "message": "This ticket is not from learn2earn fellow"
+            },
+            {
+                "note_id": "N002",
+                "author": "Yaks",
+                "message": "Okay oo"
+            }
+        ]
+    },
+    {
+        "id": "T002",
+        "title": "Yam",
+        "category": "Other",
+        "urgency": "low",
+        "affected_users": 4,
+        "priority": "medium",
+        "status": "open",
+        "assigned_to": null,
+        "notes": []
     }
 ]
